@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/yourusername/ci-flask-docker.git'
+            }
+        }
+        stage('Build Docker') {
+            steps {
+                script {
+                    docker.build('flask-cicd-image')
+                }
+            }
+        }
+        stage('Run Container') {
+            steps {
+                sh 'docker run -d -p 5000:5000 flask-cicd-image'
+            }
+        }
+    }
+}
